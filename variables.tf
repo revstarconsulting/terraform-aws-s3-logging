@@ -14,6 +14,18 @@ variable "service" {
 
 }
 
+variable "block_public_acls" {
+  description = "Set this variable to false if public access is requested."
+  type        = bool
+  default     = true
+}
+
+variable "block_public_policy" {
+  description = "Set this variable to false is public access is requested."
+  type        = bool
+  default     = true
+}
+
 locals {
   common_tags = {
     environment = var.environment
