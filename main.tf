@@ -1,22 +1,29 @@
 resource "aws_s3_bucket" "s3_bucket" {
   #tfsec:ignore:AWS002
   bucket = "${var.account_id}-${var.bucket_name}"
-  acl    = "log-delivery-write"
   tags   = local.common_tags
+}
 
-  versioning {
-    enabled = false #tfsec:ignore:AWS077
-  }
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.s3_bucket.id
+  acl    = "log-delivery-write"
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
+resource "aws_s3_bucket_versioning" "this" {
+  bucket = aws_s3_bucket.s3_bucket.id
+  versioning_configuration {
+    status = "Disabled"
   }
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  bucket = aws_s3_bucket.s3_bucket.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
 resource "aws_s3_bucket_policy" "alb" {
   count  = var.service == "alb" ? 1 : 0
   bucket = aws_s3_bucket.s3_bucket.id
@@ -38,8 +45,8 @@ resource "aws_s3_bucket_policy" "general" {
 resource "aws_s3_bucket_public_access_block" "s3_bucket_acl" {
   bucket = aws_s3_bucket.s3_bucket.id
 
-  block_public_acls       = true
-  block_public_policy     = true
+  block_public_acls       = var.block_public_acls
+  block_public_policy     = var.block_public_policy
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
