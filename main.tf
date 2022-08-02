@@ -36,6 +36,12 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
   policy = data.aws_iam_policy_document.cloudtrail.json
 }
 
+resource "aws_s3_bucket_policy" "cloudfront" {
+  count  = var.service == "cloudfront" ? 1 : 0
+  bucket = aws_s3_bucket.s3_bucket.id
+  policy = data.aws_iam_policy_document.cloudfront.json
+}
+
 resource "aws_s3_bucket_policy" "general" {
   count  = var.service != "alb" && var.service != "cloudtrail" ? 1 : 0
   bucket = aws_s3_bucket.s3_bucket.id

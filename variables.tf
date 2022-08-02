@@ -26,6 +26,12 @@ variable "block_public_policy" {
   default     = true
 }
 
+variable "cdn_canonical_user_id" {
+  description = "s3 canonical user id"
+  type        = string
+  default     = ""
+}
+
 locals {
   common_tags = {
     environment = var.environment

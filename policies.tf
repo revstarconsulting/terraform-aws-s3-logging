@@ -74,6 +74,20 @@ data "aws_iam_policy_document" "cloudtrail" {
   }
 }
 
+data "aws_iam_policy_document" "cloudfront" {
+  statement {
+    sid    = "PolicyForCloudFrontPrivateContent"
+    effect = "Allow"
+
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::${var.account_id}-${var.bucket_name}/*"]
+
+    principals {
+      type        = "CanonicalUser"
+      identifiers = [var.cdn_canonical_user_id]
+    }
+  }
+}
 
 data "aws_iam_policy_document" "general" {
   statement {
