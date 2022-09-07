@@ -2,6 +2,11 @@ variable "environment" {
   description = "The environment"
 }
 
+variable "region" {
+  type    = string
+  default = ""
+}
+
 variable "bucket_name" {
   description = "Bucket name to be created"
 }

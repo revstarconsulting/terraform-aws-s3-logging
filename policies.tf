@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "alb" {
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::033677994240:root"]
+      identifiers = ["${data.aws_elb_service_account.this.arn}"]
     }
     actions   = ["s3:PutObject"]
     resources = ["arn:aws:s3:::${var.account_id}-${var.bucket_name}/*"]
