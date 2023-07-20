@@ -16,6 +16,20 @@ resource "aws_s3_bucket_versioning" "this" {
   }
 }
 
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+resource "aws_s3_bucket_ownership_controls" "static_site" {
+  bucket = aws_s3_bucket.static_site.id
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+
+resource "aws_s3_bucket_acl" "static_site" {
+  bucket = aws_s3_bucket.static_site.id
+  acl    = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.static_site]
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.s3_bucket.id
   rule {
