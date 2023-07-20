@@ -4,11 +4,6 @@ resource "aws_s3_bucket" "s3_bucket" {
   tags   = local.common_tags
 }
 
-resource "aws_s3_bucket_acl" "this" {
-  bucket = aws_s3_bucket.s3_bucket.id
-  acl    = "log-delivery-write"
-}
-
 resource "aws_s3_bucket_versioning" "this" {
   bucket = aws_s3_bucket.s3_bucket.id
   versioning_configuration {
@@ -26,7 +21,7 @@ resource "aws_s3_bucket_ownership_controls" "this" {
 
 resource "aws_s3_bucket_acl" "this" {
   bucket = aws_s3_bucket.this.id
-  acl    = "private"
+  acl    = "log-delivery-write"
   depends_on = [aws_s3_bucket_ownership_controls.this]
 }
 
