@@ -13,14 +13,14 @@ resource "aws_s3_bucket_versioning" "this" {
 
 # Resource to avoid error "AccessControlListNotSupported The bucket does not allow ACLs"
 resource "aws_s3_bucket_ownership_controls" "this" {
-  bucket = aws_s3_bucket.this.id
+  bucket = aws_s3_bucket.s3_bucket.id
   rule {
     object_ownership = "ObjectWriter"
   }
 }
 
 resource "aws_s3_bucket_acl" "this" {
-  bucket = aws_s3_bucket.this.id
+  bucket = aws_s3_bucket.s3_bucket.id
   acl    = "log-delivery-write"
   depends_on = [aws_s3_bucket_ownership_controls.this]
 }
