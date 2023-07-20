@@ -16,7 +16,7 @@ resource "aws_s3_bucket_versioning" "this" {
   }
 }
 
-# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+# Resource to avoid error "AccessControlListNotSupported The bucket does not allow ACLs"
 resource "aws_s3_bucket_ownership_controls" "static_site" {
   bucket = aws_s3_bucket.static_site.id
   rule {
