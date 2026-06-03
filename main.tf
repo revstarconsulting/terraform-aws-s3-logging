@@ -20,8 +20,8 @@ resource "aws_s3_bucket_ownership_controls" "this" {
 }
 
 resource "aws_s3_bucket_acl" "this" {
-  bucket = aws_s3_bucket.s3_bucket.id
-  acl    = "log-delivery-write"
+  bucket     = aws_s3_bucket.s3_bucket.id
+  acl        = "log-delivery-write"
   depends_on = [aws_s3_bucket_ownership_controls.this]
 }
 
@@ -31,6 +31,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
+    blocked_encryption_types = ["SSE-C"]
   }
 }
 resource "aws_s3_bucket_policy" "alb" {
